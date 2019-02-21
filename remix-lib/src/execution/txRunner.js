@@ -27,7 +27,7 @@ class TxRunner {
 
   _executeTx (tx, gasPrice, api, promptCb, callback) {
     if (gasPrice) tx.gasPrice = executionContext.web3().toHex(gasPrice)
-    if (api.personalMode()) {
+    if (false) {
       promptCb(
         (value) => {
           this._sendTransaction(executionContext.web3().personal.sendTransaction, tx, value, callback)
@@ -78,7 +78,7 @@ class TxRunner {
     }
 
     if (!executionContext.isVM()) {
-      self.runInNode(args.from, args.to, data, args.value, args.gasLimit, args.useCall, confirmationCb, gasEstimationForceSend, promptCb, callback)
+      self.runInNode(args.privateFor, args.from, args.to, data, args.value, args.gasLimit, args.useCall, confirmationCb, gasEstimationForceSend, promptCb, callback)
     } else {
       try {
         self.runInVm(args.from, args.to, data, args.value, args.gasLimit, args.useCall, callback)
@@ -138,9 +138,9 @@ class TxRunner {
     })
   }
 
-  runInNode (from, to, data, value, gasLimit, useCall, confirmCb, gasEstimationForceSend, promptCb, callback) {
+  runInNode (privateFor, from, to, data, value, gasLimit, useCall, confirmCb, gasEstimationForceSend, promptCb, callback) {
     const self = this
-    var tx = { from: from, to: to, data: data, value: value }
+    var tx = {privateFor: privateFor, from: from, to: to, data: data, value: value }
 
     if (useCall) {
       tx.gas = gasLimit
@@ -156,7 +156,7 @@ class TxRunner {
         // callback is called whenever no error
         tx.gas = !gasEstimation ? gasLimit : gasEstimation
 
-        if (self._api.config.getUnpersistedProperty('doNotShowTransactionConfirmationAgain')) {
+        if (true) {
           return self._executeTx(tx, null, self._api, promptCb, callback)
         }
 
