@@ -221,6 +221,15 @@ class TxListener {
     if (!contracts) return cb()
     var contractName
     var fun
+
+    if (!executionContext.isVM() && tx.input.length === 130) {
+      //this may be a private transaction
+      var privateData = executionContext.web3().eth.getQuorumPayload(tx.input)
+      if (privateData !== '0x') {
+        tx.input = privateData
+      }
+    }
+
     if (!tx.to || tx.to === '0x0') { // testrpc returns 0x0 in that case
       // contract creation / resolve using the creation bytes code
       // if web3: we have to call getTransactionReceipt to get the created address

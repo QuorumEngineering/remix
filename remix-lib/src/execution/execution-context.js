@@ -202,6 +202,14 @@ function ExecutionContext () {
       var provider = this.customNetWorks[context]
       setProviderFromEndpoint(provider.url, provider.name, () => { cb() })
     }
+
+    this.web3()._extend({
+      property: "eth",
+      methods: [
+        new web3._extend.Method({name: "getQuorumPayload", call: "eth_getQuorumPayload", params: 1})
+      ]
+    });
+
   }
 
   this.currentblockGasLimit = function () {
