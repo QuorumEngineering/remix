@@ -31,7 +31,7 @@ class TxRunner {
 
   _executeTx (tx, gasPrice, api, promptCb, callback) {
     if (gasPrice) tx.gasPrice = executionContext.web3().toHex(gasPrice)
-    if (false) {
+    if (false) { // TODO: should be `api.personalMode()`, but causes error
       promptCb(
         (value) => {
           this._sendTransaction(executionContext.web3().personal.sendTransaction, tx, value, callback)
@@ -161,7 +161,7 @@ class TxRunner {
         // callback is called whenever no error
         tx.gas = !gasEstimation ? gasLimit : gasEstimation
 
-        if (true) {
+        if (true) { // TODO: should be `self._api.config.getUnpersistedProperty('doNotShowTransactionConfirmationAgain')`, but causes error
           return self._executeTx(tx, null, self._api, promptCb, callback)
         }
 
